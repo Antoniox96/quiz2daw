@@ -18,7 +18,8 @@ var Observacion = sequelize.import(path.join(__dirname, 'observacion'));
 var Profesor = sequelize.import(path.join(__dirname, 'profesor'));
 var Quiz = sequelize.import(path.join(__dirname, 'quiz'));
 var User = sequelize.import(path.join(__dirname, 'user'));
-
+var Pregunta = sequelize.import(path.join(__dirname, 'pregunta'));
+var Respuesta = sequelize.import(path.join(__dirname, 'respuesta'));
 
 Comment.belongsTo(Quiz);
 Quiz.hasMany(Comment);
@@ -26,8 +27,18 @@ Quiz.hasMany(Comment);
 Profesor.belongsTo(User, {foreignKey:'userId'});
 Alumno.belongsTo(User, {foreignKey:'userId'});
 
-Grupo.belongsTo(Profesor, {foreignKey: 'creador'});
+Grupo.belongsTo(Profesor);
 Profesor.hasMany(Grupo);
+
+Pregunta.belongsTo(Profesor, {foreignKey: 'creador'});
+Profesor.hasMany(Pregunta);
+
+Respuesta.belongsTo(Profesor, {foreignKey: 'profesor'});
+Profesor.hasMany(Respuesta);
+
+Pregunta.belongsToMany(Cuestionario, {through: 'preguntaIncorporada'});
+Cuestionario.belongsToMany(Pregunta, {through: 'preguntaIncorporada'});
+//Respuesta.belongsTo(preguntaIncorporada);
 
 Cuestionario.belongsTo(Profesor, {foreignKey: 'creador'});
 Profesor.hasMany(Cuestionario);
@@ -53,19 +64,7 @@ sequelize.sync().then(function() {
 		.then(function(){console.log('Tabla User inicializada')});
 		};
 	});
-
-	Quiz.count().then(function(count) {
-		if(count === 0) { // la tabla se inicializa solo si está vacía
-		Quiz.create({ pregunta: 'Capital de Italia' ,
-					  respuesta: 'Roma'
-		});
-		Quiz.create({ pregunta: 'Capital de Portugal' ,
-					  respuesta: 'Lisboa'
-		})
-		.then(function(){console.log('Tabla Quiz inicializada')});
-		};
 	
-	});
 	Alumno.count().then(function(count) {
             if(count === 0) { // la tabla se inicializa solo si está vacía
 		Alumno.create({ dni: '52748123A',
@@ -77,7 +76,7 @@ sequelize.sync().then(function() {
 		});
             };
 	});
-
+	
 	Profesor.count().then(function(count) {
 		if(count === 0) { // la tabla se inicializa solo si está vacía
 		Profesor.create({ apellidos: 'Sierra Olmo' ,
@@ -110,6 +109,31 @@ sequelize.sync().then(function() {
 		.then(function(){console.log('Tabla Materia inicializada')});
 		};
 	});
+	
+	Pregunta.count().then(function(count) {
+		if(count === 0) { // la tabla se inicializa solo si esta vacia
+		Pregunta.create({ 
+			enunciado: '¿Capital de España?'
+		});
+		Pregunta.create({ 
+			enunciado: '¿Capital de Francia?'
+		})
+		.then(function(){console.log('Tabla Pregunta inicializada')});
+		};
+	});
+	
+	Respuesta.count().then(function(count) {
+		if(count === 0) { // la tabla se inicializa solo si esta vacia
+		Respuesta.create({ 
+			valor: 'Madrid'
+		});
+		Respuesta.create({ 
+			valor: 'París'
+		})
+		.then(function(){console.log('Tabla Respuesta inicializada')});
+		};
+	});
+	
 });
 
 exports.Alumno = Alumno;
@@ -122,3 +146,5 @@ exports.Observacion = Observacion;
 exports.Profesor = Profesor;
 exports.Quiz = Quiz; 
 exports.User = User;
+exports.Pregunta = Pregunta;
+exports.Respuesta = Respuesta;

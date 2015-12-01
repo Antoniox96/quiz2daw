@@ -82,3 +82,7 @@ exports.create = function(req, res) {
 		}
 	);
 };
+
+exports.preguntas = function (req, res) {
+	
+}

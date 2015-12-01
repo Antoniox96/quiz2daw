@@ -40,16 +40,20 @@
 				<!-- <span class="right"> --> <li><a>Rol:<%=session.role%> - <%=session.user.username%></a></li><li><a href="/logout">Logout</a></li></span>
 			<%}%>
 			<li><a href="/admin/">Inicio</a></li>
-			<li><a href="/admin/quizes">Preguntas</a></li>
-			<li><a href="/admin/users">Usuarios</a></li>
-			<li><a href="/admin/alumnos">Alumnos</a></li>
-			<li><a href="/admin/profesores">Profesores</a></li>
-			<li><a href="/admin/grupos">Grupos</a></li>
-			<li><a href="/admin/cuestionarios">Cuestionarios</a></li>
-			<li><a href="/admin/materias">Materias</a></li>
-			<li><a href="/admin/observaciones">Observaciones</a></li>
+			<% if (session.user && session.role == 0) { %>
+				<li><a href="/admin/users">Usuarios</a></li>
+				<li><a href="/admin/alumnos">Alumnos</a></li>
+				<li><a href="/admin/profesores">Profesores</a></li>
+				<li><a href="/admin/grupos">Grupos</a></li>
+			<% } %>
+			<% if (session.user) { %>
+				<li><a href="/admin/cuestionarios">Cuestionarios</a></li>
+			<% } %>
+			<% if (session.user && session.role == 0) { %>
+				<li><a href="/admin/materias">Materias</a></li>
+				<li><a href="/admin/observaciones">Observaciones</a></li>
+			<% } %>
           </ul>
-
         </div>
       </div>
     </nav>
@@ -59,20 +63,34 @@
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <% if(!session.user){ %>
-				<!-- <span class="right"> --> <li><a href="/login">Login</a></li></span>
+				<!-- <span class="right"> --> <li>
+				<a href="/login">Login</a></li></span>
 			<%}else{%>
-				<!-- <span class="right"> --> <li><a>Rol:<%=session.role%> - <%=session.user.username%></a></li><li><a href="/logout">Logout</a></li></span>
+				<!-- <span class="right"> -->
+				<% if ( session.role === 0 ) { %> 
+					<li><a>Rol: Administrador<br/>Usuario: <%=session.user.username%></a></li>
+				<% } else if ( session.role === 1 ) { %>
+					<li><a>Rol: Profesor<br/>Usuario: <%=session.user.username%></a></li>
+				<% } else if ( session.role === 2 ) { %>
+					<li><a>Rol: Alumno<br/>Usuario: <%=session.user.username%></a></li>
+				<% } %>
+				<li><a href="/logout">Logout</a></li></span>
 			<%}%>
 			<li><a href="/admin/">Inicio</a></li>
-			<li><a href="/admin/quizes">Preguntas</a></li>
-			<li><a href="/admin/users">Usuarios</a></li>
-			<li><a href="/admin/alumnos">Alumnos</a></li>
-			<li><a href="/admin/profesores">Profesores</a></li>
-			<li><a href="/admin/grupos">Grupos</a></li>
-			<li><a href="/admin/cuestionarios">Cuestionarios</a></li>
-			<li><a href="/admin/materias">Materias</a></li>
-			<li><a href="/admin/observaciones">Observaciones</a></li>
-          </ul>
+			<% if (session.user && session.role == 0) { %>
+				<li><a href="/admin/users">Usuarios</a></li>
+				<li><a href="/admin/alumnos">Alumnos</a></li>
+				<li><a href="/admin/profesores">Profesores</a></li>
+				<li><a href="/admin/grupos">Grupos</a></li>
+			<% } %>
+			<% if (session.user) { %>
+				<li><a href="/admin/cuestionarios">Cuestionarios</a></li>
+			<% } %>
+			<% if (session.user && session.role == 0) { %>
+				<li><a href="/admin/materias">Materias</a></li>
+				<li><a href="/admin/observaciones">Observaciones</a></li>
+			<% } %>
+			</ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 			<% if(typeof errors != "undefined" && errors != null  && errors.length>0){ %>

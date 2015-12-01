@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var quizController = require('../controllers/quiz_controller');
+var preguntaController = require('../controllers/pregunta_controller');
 var autorController = require('../controllers/autor_controller');
 var commentController = require('../controllers/comment_controller');
 var sessionController = require('../controllers/session_controller');
@@ -26,7 +26,7 @@ router.param('grupoId', 			grupoController.load); //autoload :grupoId
 router.param('materiaId', 			materiaController.load);//autoload :materiaId
 router.param('observacionId', 		observacionController.load);//autoload :observacionId
 router.param('profesorId', 			profesorController.load);//autoload :profesorId
-router.param('quizId',				quizController.load); //autoload :quizId
+router.param('preguntaId',				preguntaController.load); //autoload :preguntaId
 router.param('userId', 				userController.load);//autoload :userId
 
 //Alumnos
@@ -38,9 +38,9 @@ router.put('/alumnos/:alumnoId(\\d+)',          sessionController.adminRequired,
 router.delete('/alumnos/:alumnoId(\\d+)', 		sessionController.adminRequired, 	alumnoController.destroy);
 
 //Comments
-router.get('/quizes/:quizId(\\d+)/comments/new', 														commentController.new);
-router.post('/quizes/:quizId(\\d+)/comments', 															commentController.create);
-router.get('/quizes/:quizId(\\d+)/comments/:comentId(\\d+)/publish', sessionController.loginRequired, 	commentController.publish);
+router.get('/preguntas/:preguntaId(\\d+)/comments/new', 														commentController.new);
+router.post('/preguntas/:preguntaId(\\d+)/comments', 															commentController.create);
+router.get('/preguntas/:preguntaId(\\d+)/comments/:comentId(\\d+)/publish', sessionController.loginRequired, 	commentController.publish);
 
 //Cuestionarios
 router.get('/cuestionarios',								sessionController.profesorRequired, 	cuestionarioController.index);
@@ -49,11 +49,16 @@ router.put('/cuestionarios/:cuestionarioId(\\d+)', 			sessionController.loginReq
 router.delete('/cuestionarios/:cuestionarioId(\\d+)', 		sessionController.loginRequired, 	cuestionarioController.destroy);
 router.get('/cuestionarios/new',							sessionController.loginRequired, 	cuestionarioController.new);
 router.post('/cuestionarios/create', 						sessionController.loginRequired, 	cuestionarioController.create);
+router.get('/cuestionarios/:cuestionarioId(\\d+)/preguntas', sessionController.loginRequired, 	cuestionarioController.preguntas);
+
 
 //Grupos
 router.get('/grupos', 							sessionController.adminRequired,	grupoController.index);
 router.get('/grupos/:grupoId(\\d+)', 												grupoController.show);
+router.get('/grupos/new', 						sessionController.adminRequired, 	grupoController.new);
+router.post('/grupos/create', 					sessionController.adminRequired, 	grupoController.create);
 router.get('/grupos/:grupoId(\\d+)/edit',       sessionController.adminRequired, 	grupoController.edit);
+router.get('/grupos/:grupoId(\\d+)/alumnos',    sessionController.adminRequired, 	grupoController.alumnos);
 router.put('/grupos/:grupoId(\\d+)',            sessionController.adminRequired, 	grupoController.update);
 router.delete('/grupos/:grupoId(\\d+)', 		sessionController.adminRequired, 	grupoController.destroy);
 
@@ -73,15 +78,14 @@ router.get('/observaciones/:observacionId(\\d+)/edit',      sessionController.ad
 router.put('/observaciones/:observacionId(\\d+)',           sessionController.adminRequired, 	observacionController.update);
 router.delete('/observaciones/:observacionId(\\d+)', 		sessionController.adminRequired, 	observacionController.destroy);
 
-//Preguntas
-router.get('/quizes', 																			quizController.index);
-router.get('/quizes/:quizId(\\d+)', 															quizController.show);
-router.get('/quizes/:quizId(\\d+)/answer', 														quizController.answer);
-router.get('/quizes/new', 									sessionController.loginRequired, 	quizController.new);
-router.post('/quizes/create', 								sessionController.loginRequired, 	quizController.create);
-router.get('/quizes/:quizId(\\d+)/edit', 					sessionController.loginRequired, 	quizController.edit);
-router.put('/quizes/:quizId(\\d+)', 						sessionController.loginRequired, 	quizController.update);
-router.delete('/quizes/:quizId(\\d+)', 						sessionController.loginRequired, 	quizController.destroy);
+//Preguntas de un Cuestionario
+router.get('/preguntas/:preguntaId(\\d+)', 															preguntaController.show);
+router.get('/preguntas/:preguntaId(\\d+)/answer', 													preguntaController.answer);
+router.get('/preguntas/new', 									sessionController.loginRequired, 	preguntaController.new);
+router.post('/preguntas/create', 								sessionController.loginRequired, 	preguntaController.create);
+router.get('/preguntas/:preguntaId(\\d+)/edit', 				sessionController.loginRequired,	preguntaController.edit);
+router.put('/preguntas/:preguntaId(\\d+)', 						sessionController.loginRequired, 	preguntaController.update);
+router.delete('/preguntas/:preguntaId(\\d+)', 					sessionController.loginRequired,	preguntaController.destroy);
 
 //Profesores
 router.get('/profesores', 									sessionController.adminRequired, 	profesorController.index);
