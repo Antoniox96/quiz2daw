@@ -12,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.STRING,
 			validate: {notEmpty: { msg: "->Falta Obervaciones" }}
 		},
-                fechaFin: {
+		fechaFin: {
 			type: DataTypes.DATE,
 			validate: {notEmpty: { msg: "->Falta  Fecha"}}
 		}

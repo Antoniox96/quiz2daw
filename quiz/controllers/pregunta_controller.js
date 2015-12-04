@@ -12,14 +12,6 @@ exports.load = function(req, res, next, preguntaId) {
 	).catch(function(error) { next(error);});
 };
 
-// GET /preguntas
-exports.index = function(req, res) {
-	models.Pregunta.findAll().then(
-                function(preguntas) {
-    res.render('preguntas/index.ejs', {preguntas: preguntas});
-});
-}
-
 // GET /preguntas/:preguntaId
 exports.show = function(req, res) {
     res.render('preguntas/show', {pregunta: req.pregunta});
@@ -33,30 +25,33 @@ exports.answer = function(req, res) {
 		resultado = 'Correcto';
 	}
 	res.render('preguntas/answer', {respuesta: resultado, pregunta: req.pregunta});
-        };
+};
 
 // GET /preguntas/new
 exports.new = function(req, res) {
-	var pregunta = models.pregunta.build( //crea objeto pregunta
-	{pregunta: "Pregunta", respuesta: "Respuesta"}
+	var pregunta = models.Pregunta.build( //crea objeto pregunta
+		{pregunta: "Pregunta"}
 	);
-    res.render('preguntas/new', {pregunta: pregunta});
+	var respuesta = models.Respuesta.build(
+		{respuesta: "Respuesta"}
+	);
+    res.render('preguntas/new', {pregunta: pregunta, respuesta: respuesta});
 };
 
 // POST /preguntas/create
 exports.create = function(req, res) {
-	var pregunta = models.pregunta.build( req.body.pregunta );
-	
+	var pregunta = models.Pregunta.build(req.body.pregunta);
+	//var respuesta = models.Respuesta.build(req.body.respuesta);
 	//guarda en DB los campos pregunta y respuesta de pregunta
 	pregunta.validate()
 	.then(
 		function(err){
 			if(err) {
-			res.render('preguntas/new', {pregunta: pregunta, errors: err.errors});
+				res.render('preguntas/new', {pregunta: pregunta, errors: err.errors});
 			} else {
-				pregunta.save({fields: ["pregunta", "respuesta"]}).then(function(){
-					res.redirect('/admin/preguntas');
-				})	//Redireccion HTTP (URL relativo) lista de preguntas
+				models.Pregunta.create({enunciado: req.body.pregunta.enunciado}).then(function (pregunta) {
+					cuestionario.addPregunta();
+				}).then(function(){ res.redirect('/admin/cuestionarios'); })	//Redireccion HTTP (URL relativo) lista de preguntas
 			}
 		}
 	);

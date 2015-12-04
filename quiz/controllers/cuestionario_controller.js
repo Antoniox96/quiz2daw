@@ -5,7 +5,7 @@ exports.load = function(req, res, next, cuestionarioId) {
 			where: {
 				id: Number(cuestionarioId)
 			},
-			include: [{ model: models.Profesor }]
+			include: [ { model: models.Profesor }, { model: models.Pregunta } ]
 		}).then(function(cuestionario) {
 			if(cuestionario) {
 				req.cuestionario = cuestionario;
@@ -74,7 +74,6 @@ exports.create = function(req, res) {
 			if(err) {
 			res.render('cuestionarios/new', {cuestionario: cuestionario, errors: err.errors});
 			} else {
-				for(prop in cuestionario.dataValues) {console.log(prop + ' - ' + cuestionario[prop])};
 				cuestionario.save({fields: ["fechaFin", "observaciones", "creador"]}).then(function(){
 					res.redirect('/admin/cuestionarios');
 				})	//Redireccion HTTP (URL relativo) lista de cuestionarios
@@ -83,6 +82,9 @@ exports.create = function(req, res) {
 	);
 };
 
-exports.preguntas = function (req, res) {
-	
-}
+exports.preguntas = function(req, res) {
+	req.cuestionario.getPregunta().then(function(preguntas) {
+			res.render('preguntas/index.ejs', {preguntas: preguntas, cuestionario: req.cuestionario});
+		}
+	).catch(function(error){ callback(new Error('Error al mostrar los datos')); });
+};

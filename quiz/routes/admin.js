@@ -51,6 +51,15 @@ router.get('/cuestionarios/new',							sessionController.loginRequired, 	cuestio
 router.post('/cuestionarios/create', 						sessionController.loginRequired, 	cuestionarioController.create);
 router.get('/cuestionarios/:cuestionarioId(\\d+)/preguntas', sessionController.loginRequired, 	cuestionarioController.preguntas);
 
+//Preguntas de un Cuestionario
+router.get('/preguntas/:preguntaId(\\d+)', 															preguntaController.show);
+router.get('/preguntas/:preguntaId(\\d+)/answer', 													preguntaController.answer);
+router.get('/preguntas/new', 									sessionController.loginRequired, 	preguntaController.new);
+router.post('/preguntas/create', 								sessionController.loginRequired, 	preguntaController.create);
+router.get('/preguntas/:preguntaId(\\d+)/edit', 				sessionController.loginRequired,	preguntaController.edit);
+router.put('/preguntas/:preguntaId(\\d+)', 						sessionController.loginRequired, 	preguntaController.update);
+router.delete('/preguntas/:preguntaId(\\d+)', 					sessionController.loginRequired,	preguntaController.destroy);
+
 
 //Grupos
 router.get('/grupos', 							sessionController.adminRequired,	grupoController.index);
@@ -78,14 +87,6 @@ router.get('/observaciones/:observacionId(\\d+)/edit',      sessionController.ad
 router.put('/observaciones/:observacionId(\\d+)',           sessionController.adminRequired, 	observacionController.update);
 router.delete('/observaciones/:observacionId(\\d+)', 		sessionController.adminRequired, 	observacionController.destroy);
 
-//Preguntas de un Cuestionario
-router.get('/preguntas/:preguntaId(\\d+)', 															preguntaController.show);
-router.get('/preguntas/:preguntaId(\\d+)/answer', 													preguntaController.answer);
-router.get('/preguntas/new', 									sessionController.loginRequired, 	preguntaController.new);
-router.post('/preguntas/create', 								sessionController.loginRequired, 	preguntaController.create);
-router.get('/preguntas/:preguntaId(\\d+)/edit', 				sessionController.loginRequired,	preguntaController.edit);
-router.put('/preguntas/:preguntaId(\\d+)', 						sessionController.loginRequired, 	preguntaController.update);
-router.delete('/preguntas/:preguntaId(\\d+)', 					sessionController.loginRequired,	preguntaController.destroy);
 
 //Profesores
 router.get('/profesores', 									sessionController.adminRequired, 	profesorController.index);
