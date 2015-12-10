@@ -53,13 +53,14 @@ router.get('/cuestionarios/:cuestionarioId(\\d+)/preguntas', sessionController.l
 router.post('/cuestionarios/:cuestionarioId(\\d+)/duplicar', sessionController.adminRequired, cuestionarioController.duplicar);
 
 //Preguntas de un Cuestionario
-router.get('/preguntas/:preguntaId(\\d+)', 															preguntaController.show);
-router.get('/preguntas/:preguntaId(\\d+)/answer', 													preguntaController.answer);
-router.get('/preguntas/new', 									sessionController.loginRequired, 	preguntaController.new);
-router.post('/preguntas/create', 								sessionController.loginRequired, 	preguntaController.create);
-router.get('/preguntas/:preguntaId(\\d+)/edit', 				sessionController.loginRequired,	preguntaController.edit);
-router.put('/preguntas/:preguntaId(\\d+)', 						sessionController.loginRequired, 	preguntaController.update);
-router.delete('/preguntas/:preguntaId(\\d+)', 					sessionController.loginRequired,	preguntaController.destroy);
+router.get('/cuestionarios/:cuestionarioId(\\d+)/preguntas',						sessionController.loginRequired, 	cuestionarioController.preguntas);
+router.get('/cuestionarios/:cuestionarioId(\\d+)/preguntas/:preguntaId(\\d+)',											preguntaController.show);
+router.get('/cuestionarios/:cuestionarioId(\\d+)/preguntas/:preguntaId(\\d+)/answer', 									preguntaController.answer);
+router.get('/cuestionarios/:cuestionarioId(\\d+)/preguntas/new', 					sessionController.loginRequired, 	preguntaController.new);
+router.post('/cuestionarios/:cuestionarioId(\\d+)/preguntas/create', 				sessionController.loginRequired, 	preguntaController.create);
+router.get('/cuestionarios/:cuestionarioId(\\d+)/preguntas/:preguntaId(\\d+)/edit', sessionController.loginRequired,	preguntaController.edit);
+router.put('/cuestionarios/:cuestionarioId(\\d+)/preguntas/:preguntaId(\\d+)', 		sessionController.loginRequired, 	preguntaController.update);
+router.delete('/cuestionarios/:cuestionarioId(\\d+)/preguntas/:preguntaId(\\d+)', 	sessionController.loginRequired,	preguntaController.destroy);
 
 
 //Grupos

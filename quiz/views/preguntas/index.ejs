@@ -2,14 +2,14 @@
 <% var i; for (i=0; i < preguntas.length; i ++) { %>
 	<tr>
 		<td align="left">
-			<%= (i+1)+".  "%><%=preguntas[i].enunciado %><a href="/admin/preguntas/<%= preguntas[i].id %>"></a>
+			<%= (i+1)+".  "%><%=preguntas[i].enunciado %><a href="/admin/cuestionarios/<%= cuestionario.id %>/preguntas/<%= preguntas[i].id %>"></a>
 		</td>
 		<%if(session.user) {%>
 			<td>
-				<a href="/admin/preguntas/<%= preguntas[i].id %>/edit"><button>editar</button></a>
+				<a href="/admin/cuestionarios/<%= cuestionario.id %>/preguntas/<%= preguntas[i].id %>/edit"><button>editar</button></a>
 			</td>
 			<td>
-				<form method="post" action="/admin/preguntas/<%= preguntas[i].id %>?_method=delete">
+				<form method="post" action="/admin/cuestionarios/<%= cuestionario.id %>/preguntas/<%= preguntas[i].id %>?_method=delete">
 					<button type="submit" onClick="return confirm('Borrar: <% preguntas[i].pregunta %>');">
 						borrar
 					</button>
@@ -21,6 +21,6 @@
 </table>
 <p>
 	<%if(session.user) {%>
-		<a href="/admin/preguntas/new"><button type="button">Crear pregunta</button></a>
+		<a href="/admin/cuestionarios/<%= cuestionario.id %>/preguntas/new"><button type="button">Crear pregunta</button></a>
 	<%}%>
 </p>
