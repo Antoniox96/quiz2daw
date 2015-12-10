@@ -82,6 +82,25 @@ exports.create = function(req, res) {
 	);
 };
 
+exports.duplicar = function(req, res) {
+	var cuestionario = models.Cuestionario.build( req.body.cuestionario );
+    cuestionario.set('creador', req.cuestionario.creador);
+    cuestionario.set('observaciones', req.cuestionario.observaciones);
+    cuestionario.set('fechaFin', req.cuestionario.fechaFin);
+	cuestionario.validate()
+	.then(
+		function(err){
+			if(err) {
+                    res.render('cuestionarios', {cuestionario: cuestionario, errors: err.errors});
+                } else {
+                    cuestionario.save({fields: ["creador", "observaciones", "fechaFin"]}).then(function(){
+                        res.redirect('/admin/cuestionarios');
+                    })
+                }
+		}
+	);
+};
+
 exports.preguntas = function(req, res) {
 	req.cuestionario.getPregunta().then(function(preguntas) {
 			res.render('preguntas/index.ejs', {preguntas: preguntas, cuestionario: req.cuestionario});

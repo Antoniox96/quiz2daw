@@ -50,6 +50,7 @@ router.delete('/cuestionarios/:cuestionarioId(\\d+)', 		sessionController.loginR
 router.get('/cuestionarios/new',							sessionController.loginRequired, 	cuestionarioController.new);
 router.post('/cuestionarios/create', 						sessionController.loginRequired, 	cuestionarioController.create);
 router.get('/cuestionarios/:cuestionarioId(\\d+)/preguntas', sessionController.loginRequired, 	cuestionarioController.preguntas);
+router.post('/cuestionarios/:cuestionarioId(\\d+)/duplicar', sessionController.adminRequired, cuestionarioController.duplicar);
 
 //Preguntas de un Cuestionario
 router.get('/preguntas/:preguntaId(\\d+)', 															preguntaController.show);
