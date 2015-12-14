@@ -2,7 +2,7 @@
 <% var i; for (i=0; i < preguntas.length; i ++) { %>
 	<tr>
 		<td align="left">
-			<%= (i+1)+".  "%><%=preguntas[i].enunciado %><a href="/admin/cuestionarios/<%= cuestionario.id %>/preguntas/<%= preguntas[i].id %>"></a>
+			<a href="/admin/cuestionarios/<%= cuestionario.id %>/preguntas/<%= preguntas[i].id %>/show"><%= (i+1)+".  "%><%=preguntas[i].enunciado %></a>
 		</td>
 		<%if(session.user) {%>
 			<td>

@@ -43,24 +43,24 @@ router.post('/preguntas/:preguntaId(\\d+)/comments', 															commentContr
 router.get('/preguntas/:preguntaId(\\d+)/comments/:comentId(\\d+)/publish', sessionController.loginRequired, 	commentController.publish);
 
 //Cuestionarios
-router.get('/cuestionarios',								sessionController.profesorRequired, 	cuestionarioController.index);
-router.get('/cuestionarios/:cuestionarioId(\\d+)/edit', 	sessionController.loginRequired, 	cuestionarioController.edit);
-router.put('/cuestionarios/:cuestionarioId(\\d+)', 			sessionController.loginRequired, 	cuestionarioController.update);
-router.delete('/cuestionarios/:cuestionarioId(\\d+)', 		sessionController.loginRequired, 	cuestionarioController.destroy);
-router.get('/cuestionarios/new',							sessionController.loginRequired, 	cuestionarioController.new);
-router.post('/cuestionarios/create', 						sessionController.loginRequired, 	cuestionarioController.create);
+router.get('/cuestionarios',								sessionController.loginRequired, 	cuestionarioController.index);
+router.get('/cuestionarios/:cuestionarioId(\\d+)/edit', 	sessionController.profesorRequired, 	cuestionarioController.edit);
+router.put('/cuestionarios/:cuestionarioId(\\d+)', 			sessionController.profesorRequired, 	cuestionarioController.update);
+router.delete('/cuestionarios/:cuestionarioId(\\d+)', 		sessionController.profesorRequired, 	cuestionarioController.destroy);
+router.get('/cuestionarios/new',							sessionController.profesorRequired, 	cuestionarioController.new);
+router.post('/cuestionarios/create', 						sessionController.profesorRequired, 	cuestionarioController.create);
 router.get('/cuestionarios/:cuestionarioId(\\d+)/preguntas', sessionController.loginRequired, 	cuestionarioController.preguntas);
-router.post('/cuestionarios/:cuestionarioId(\\d+)/duplicar', sessionController.adminRequired, cuestionarioController.duplicar);
+router.post('/cuestionarios/:cuestionarioId(\\d+)/duplicar', sessionController.profesorRequired, cuestionarioController.duplicar);
 
 //Preguntas de un Cuestionario
-router.get('/cuestionarios/:cuestionarioId(\\d+)/preguntas',						sessionController.loginRequired, 	cuestionarioController.preguntas);
-router.get('/cuestionarios/:cuestionarioId(\\d+)/preguntas/:preguntaId(\\d+)',											preguntaController.show);
+router.get('/cuestionarios/:cuestionarioId(\\d+)/preguntas',						sessionController.profesorRequired, 	cuestionarioController.preguntas);
+router.get('/cuestionarios/:cuestionarioId(\\d+)/preguntas/:preguntaId(\\d+)/show',											preguntaController.show);
 router.get('/cuestionarios/:cuestionarioId(\\d+)/preguntas/:preguntaId(\\d+)/answer', 									preguntaController.answer);
-router.get('/cuestionarios/:cuestionarioId(\\d+)/preguntas/new', 					sessionController.loginRequired, 	preguntaController.new);
-router.post('/cuestionarios/:cuestionarioId(\\d+)/preguntas/create', 				sessionController.loginRequired, 	preguntaController.create);
-router.get('/cuestionarios/:cuestionarioId(\\d+)/preguntas/:preguntaId(\\d+)/edit', sessionController.loginRequired,	preguntaController.edit);
-router.put('/cuestionarios/:cuestionarioId(\\d+)/preguntas/:preguntaId(\\d+)', 		sessionController.loginRequired, 	preguntaController.update);
-router.delete('/cuestionarios/:cuestionarioId(\\d+)/preguntas/:preguntaId(\\d+)', 	sessionController.loginRequired,	preguntaController.destroy);
+router.get('/cuestionarios/:cuestionarioId(\\d+)/preguntas/new', 					sessionController.profesorRequired, 	preguntaController.new);
+router.post('/cuestionarios/:cuestionarioId(\\d+)/preguntas/create', 				sessionController.profesorRequired, 	preguntaController.create);
+router.get('/cuestionarios/:cuestionarioId(\\d+)/preguntas/:preguntaId(\\d+)/edit', sessionController.profesorRequired,	preguntaController.edit);
+router.put('/cuestionarios/:cuestionarioId(\\d+)/preguntas/:preguntaId(\\d+)', 		sessionController.profesorRequired, 	preguntaController.update);
+router.delete('/cuestionarios/:cuestionarioId(\\d+)/preguntas/:preguntaId(\\d+)', 	sessionController.profesorRequired,	preguntaController.destroy);
 
 
 //Grupos

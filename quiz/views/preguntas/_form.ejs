@@ -2,7 +2,10 @@
 <label for="preg" class="rem">Pregunta:</label>
 <input type="text" id="enun" name="pregunta[enunciado]" value="<%= pregunta.enunciado %>" />
 </p>
-
+<p>
+<label for="preg" class="rem">Respuesta:</label>
+<input type="text" id="resp" name="pregunta[respuesta]" value="<%= pregunta.respuesta %>" />
+</p>
 <a href="/admin/cuestionarios/<%= cuestionario.id %>/preguntas"><button type="button">Cancelar</button></a>
 
 <input type="submit" value="Guardar">

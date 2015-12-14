@@ -14,7 +14,7 @@ exports.load = function(req, res, next, preguntaId) {
 
 // GET /preguntas/:preguntaId
 exports.show = function(req, res) {
-    res.render('preguntas/show', {pregunta: req.pregunta});
+    res.render('preguntas/show', {pregunta: req.pregunta, respuesta: req.respuesta});
 };
 
 // GET /preguntas/:id/answer
@@ -24,33 +24,30 @@ exports.answer = function(req, res) {
 	if(req.query.respuesta === req.pregunta.respuesta){
 		resultado = 'Correcto';
 	}
-	res.render('preguntas/answer', {respuesta: resultado, pregunta: req.pregunta});
+	res.render('preguntas/answer', {respuesta: resultado, pregunta: req.pregunta, cuestionario: req.cuestionario});
 };
 
 // GET /preguntas/new
 exports.new = function(req, res) {
 	var pregunta = models.Pregunta.build( //crea objeto pregunta
-		{pregunta: "Pregunta"}
+		{enunciado: "Pregunta", respuesta: "Respuesta"}
 	);
-	var respuesta = models.Respuesta.build(
-		{respuesta: "Respuesta"}
-	);
-    res.render('preguntas/new', {pregunta: pregunta, respuesta: respuesta, cuestionario: req.cuestionario});
+    res.render('preguntas/new', {pregunta: pregunta, cuestionario: req.cuestionario});
 };
 
 // POST /preguntas/create
 exports.create = function(req, res) {
-	var cuestionario = req.cuestionario;
-	var pregunta = models.Pregunta.build(req.body.pregunta);
-	pregunta.addCuestionarios(req.cuestionario);
-	pregunta.validate()
+for(prop in req.body.pregunta) {console.log(prop);}
+	var Cuestionario = req.cuestionario;
+	var Pregunta = models.Pregunta.build(req.body.pregunta);
+	Pregunta.validate()
 	.then(
 		function(err){
 			if(err) {
 				res.render('preguntas/new', {pregunta: pregunta, cuestionario: req.cuestionario, errors: err.errors});
 			} else {
-				models.Pregunta.create({enunciado: req.body.pregunta.enunciado}).then(function (pregunta) {
-					cuestionario.addPregunta();
+				models.Pregunta.create({enunciado: req.body.pregunta.enunciado, respuesta: req.body.pregunta.respuesta}).then(function (pregunta) {
+					Cuestionario.addPregunta(pregunta);
 				}).then(function(){ res.redirect('/admin/cuestionarios/' + req.cuestionario.id + '/preguntas'); })	//Redireccion HTTP (URL relativo) lista de preguntas
 			}
 		}
@@ -60,11 +57,11 @@ exports.create = function(req, res) {
 // GET /preguntas/:id/edit
 exports.edit = function(req, res) {
     var pregunta = req.pregunta; //autoload de instancia de pregunta
-    res.render('preguntas/edit', {pregunta: pregunta});
+    res.render('preguntas/edit', {pregunta: pregunta, cuestionario: req.cuestionario});
 };
 
 exports.update = function(req, res) {
-    req.pregunta.pregunta = req.body.pregunta.pregunta;
+    req.pregunta.pregunta = req.body.pregunta.enunciado;
     req.pregunta.respuesta = req.body.pregunta.respuesta;
     
     req.pregunta
@@ -72,11 +69,11 @@ exports.update = function(req, res) {
             .then(
             function(err){
                 if(err){
-                    res.render('preguntas/edit', {pregunta: req.pregunta});
+                    res.render('preguntas/edit', {pregunta: req.pregunta, cuestionario: req.cuestionario});
                 }else{
                     req.pregunta
-                            .save({fields:["pregunta","respuesta"]})
-                            .then(function(){res.redirect('/admin/preguntas');});
+                            .save({fields:["enunciado","respuesta"]})
+                            .then(function(){res.redirect('/admin/cuestionarios');});
                 }
             }
         );

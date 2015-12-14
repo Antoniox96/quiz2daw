@@ -16,13 +16,9 @@ var Grupo = sequelize.import(path.join(__dirname, 'grupo'));
 var Materia = sequelize.import(path.join(__dirname, 'materia'));
 var Observacion = sequelize.import(path.join(__dirname, 'observacion'));
 var Profesor = sequelize.import(path.join(__dirname, 'profesor'));
-var Quiz = sequelize.import(path.join(__dirname, 'quiz'));
 var User = sequelize.import(path.join(__dirname, 'user'));
 var Pregunta = sequelize.import(path.join(__dirname, 'pregunta'));
 var Respuesta = sequelize.import(path.join(__dirname, 'respuesta'));
-
-Comment.belongsTo(Quiz);
-Quiz.hasMany(Comment);
 
 Profesor.belongsTo(User, {foreignKey:'userId'});
 Alumno.belongsTo(User, {foreignKey:'userId'});
@@ -38,7 +34,6 @@ Profesor.hasMany(Respuesta);
 
 Pregunta.belongsToMany(Cuestionario, {through: 'preguntaIncorporada'});
 Cuestionario.belongsToMany(Pregunta, {through: 'preguntaIncorporada'});
-//Respuesta.belongsTo(preguntaIncorporada);
 
 Cuestionario.belongsTo(Profesor, {foreignKey: 'creador'});
 Profesor.hasMany(Cuestionario);
@@ -113,24 +108,14 @@ sequelize.sync().then(function() {
 	Pregunta.count().then(function(count) {
 		if(count === 0) { // la tabla se inicializa solo si esta vacia
 		Pregunta.create({ 
-			enunciado: '¿Capital de España?'
+			enunciado: '¿Capital de España?',
+			respuesta: 'Madrid'
 		});
 		Pregunta.create({ 
-			enunciado: '¿Capital de Francia?'
+			enunciado: '¿Capital de Francia?',
+			respuesta: 'París'
 		})
 		.then(function(){console.log('Tabla Pregunta inicializada')});
-		};
-	});
-	
-	Respuesta.count().then(function(count) {
-		if(count === 0) { // la tabla se inicializa solo si esta vacia
-		Respuesta.create({ 
-			valor: 'Madrid'
-		});
-		Respuesta.create({ 
-			valor: 'París'
-		})
-		.then(function(){console.log('Tabla Respuesta inicializada')});
 		};
 	});
 	
@@ -144,7 +129,6 @@ exports.Grupo = Grupo;
 exports.Materia = Materia;
 exports.Observacion = Observacion;
 exports.Profesor = Profesor;
-exports.Quiz = Quiz; 
 exports.User = User;
 exports.Pregunta = Pregunta;
 exports.Respuesta = Respuesta;

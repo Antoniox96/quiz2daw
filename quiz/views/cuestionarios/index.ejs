@@ -15,7 +15,7 @@
 			<% } %>
 		</td>
 		<td><%= cuestionarios[i].observaciones %></td>    
-		<td><%= cuestionarios[i].fechaFin %></a></td>
+		<td><%= cuestionarios[i].fechaFin.toISOString().substring(0,10) %></a></td>
 		<td><a href="/admin/cuestionarios/<%= cuestionarios[i].id %>/edit"><button>editar</button></a></td>
 		<td><a href="/admin/cuestionarios/<%= cuestionarios[i].id %>/preguntas"><button>Preguntas</button></a></td>
 		<td>    <form method="post" action="/admin/cuestionarios/<%= cuestionarios[i].id %>/duplicar">

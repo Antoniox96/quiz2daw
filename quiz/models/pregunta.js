@@ -5,6 +5,9 @@ module.exports = function(sequelize, DataTypes) {
 	{
 		enunciado: {
 			type: DataTypes.STRING,
+		},
+		respuesta: {
+			type: DataTypes.STRING,
 		}
 	});
 }
